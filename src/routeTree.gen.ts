@@ -9,13 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LayoutRouteRouteImport } from './routes/_layout/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
+import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as AuthOtpCheckRouteImport } from './routes/_auth/otp-check'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 
+const LayoutRouteRoute = LayoutRouteRouteImport.update({
+  id: '/_layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LayoutIndexRoute = LayoutIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
 const AuthOtpCheckRoute = AuthOtpCheckRouteImport.update({
   id: '/otp-check',
@@ -29,41 +40,64 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof AuthRouteRouteWithChildren
+  '/': typeof LayoutIndexRoute
   '/login': typeof AuthLoginRoute
   '/otp-check': typeof AuthOtpCheckRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof AuthRouteRouteWithChildren
+  '/': typeof LayoutIndexRoute
   '/login': typeof AuthLoginRoute
   '/otp-check': typeof AuthOtpCheckRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteRouteWithChildren
+  '/_layout': typeof LayoutRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/otp-check': typeof AuthOtpCheckRoute
+  '/_layout/': typeof LayoutIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths: '/' | '/login' | '/otp-check'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/login' | '/otp-check'
-  id: '__root__' | '/_auth' | '/_auth/login' | '/_auth/otp-check'
+  id:
+    | '__root__'
+    | '/_auth'
+    | '/_layout'
+    | '/_auth/login'
+    | '/_auth/otp-check'
+    | '/_layout/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  LayoutRouteRoute: typeof LayoutRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_layout': {
+      id: '/_layout'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth': {
       id: '/_auth'
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_layout/': {
+      id: '/_layout/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutIndexRouteImport
+      parentRoute: typeof LayoutRouteRoute
     }
     '/_auth/otp-check': {
       id: '/_auth/otp-check'
@@ -96,8 +130,21 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
+interface LayoutRouteRouteChildren {
+  LayoutIndexRoute: typeof LayoutIndexRoute
+}
+
+const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
+  LayoutIndexRoute: LayoutIndexRoute,
+}
+
+const LayoutRouteRouteWithChildren = LayoutRouteRoute._addFileChildren(
+  LayoutRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
+  LayoutRouteRoute: LayoutRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

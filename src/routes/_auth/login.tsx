@@ -2,6 +2,11 @@ import { createFileRoute, useRouter } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth/login')({
   component: GetPhonePage,
+  loader() {
+    console.log('loginm');
+    console.log(typeof window);
+    
+  }
 })
 
 import { useForm } from '@tanstack/react-form'
@@ -9,7 +14,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Phone, ArrowLeft } from 'lucide-react'
-import { sendOtpAction } from '#/feature/auth/serverFn/send-otp'
+import { sendOtpAction } from '@/feature/auth/serverFn/send-otp'
 
 const validatePhone = (phone: string) => {
   const iranPhoneRegex = /^09[0-9]{9}$/

@@ -1,0 +1,1 @@
+export function FeaturedSection(){return <section>Featured Products</section>}

@@ -1,0 +1,1 @@
+export function BenefitsSection(){return <section>Benefits</section>}
