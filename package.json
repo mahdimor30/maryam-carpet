@@ -9,7 +9,7 @@
     "dev": " bun --bun vite dev --port 3000",
     "build": "bun --bun vite build",
     "start": "bun run .output/server/index.mjs",
-    "preview": " bun  vite preview",
+    "preview": " vite preview",
     "test": "vitest run",
     "lint": "eslint",
     "format": "prettier --write . && eslint --fix",

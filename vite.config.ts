@@ -8,9 +8,6 @@ import tailwindcss from '@tailwindcss/vite'
 import { nitro } from 'nitro/vite'
 
 const config = defineConfig({
-  preview: {
-    host: true,
-  },
   resolve: { tsconfigPaths: true },
   plugins: [
     devtools(),
@@ -21,15 +18,7 @@ const config = defineConfig({
     }),
     tailwindcss(),
     tanstackStart({
-      pages: [
-        {
-          path: '/login',
-          prerender: {
-            enabled: true,
-            crawlLinks: false,
-          },
-        },
-      ],
+      
     }),
     viteReact(),
   ],
