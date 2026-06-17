@@ -15,7 +15,8 @@ const config = defineConfig({
   plugins: [
     devtools(),
     nitro({
-      preset: 'cloudflare-pages',
+      
+      preset: 'cloudflare-module',
       rollupConfig: { external: [/^@sentry\//] },
     }),
     tailwindcss(),
